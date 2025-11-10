@@ -1,9 +1,24 @@
+# Virtual environment
 .venv/
+venv/
+
+# Ignore temporary and cache files
 __pycache__/
-.ipynb_checkpoints/
-data/
-features/*.csv
-*.npy
+*.pyc
+*.pyo
+
+# Ignore model checkpoints or large training artifacts
 *.pt
 *.pth
 *.joblib
+*.npy
+
+# Keep feature CSVs and reports for reproducibility
+# (commented out so they're tracked)
+# features/*.csv
+# reports/*.csv
+# reports/*.json
+# reports/*.txt
+
+# Ignore Jupyter checkpoints
+.ipynb_checkpoints/
