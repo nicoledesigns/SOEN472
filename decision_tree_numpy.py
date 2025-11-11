@@ -6,6 +6,14 @@ Decision Tree (from scratch, NumPy) for COMP472 - CIFAR-10 features (50-d PCA).
 - Min samples split/pruning knobs included
 - Experiments over depths and proper evaluation/CM figure
 
+# Depth variations tested during experimentation:
+# depths = [5, 10, 20, 50]
+# for d in depths:
+#     tree = build_tree(X_train, y_train, max_depth=d)
+#     y_pred = predict(tree, X_test)
+#     print(f"Depth {d} Results: {compute_metrics(y_test, y_pred)}")
+
+
 Usage:
   python decision_tree_numpy.py --train features/train_features.csv --test features/test_features.csv --outdir results_dt_numpy --depths 5 10 20 50
 """
