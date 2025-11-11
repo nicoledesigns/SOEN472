@@ -4,6 +4,13 @@ Scikit-learn Decision Tree for COMP472 - CIFAR-10 features (50-d PCA).
 - Gini, max_depth sweep
 - Evaluation with confusion matrix & metrics
 
+# Depth variations tested during experimentation:
+# for depth in [5, 10, 20, 50]:
+#     clf = DecisionTreeClassifier(max_depth=depth)
+#     clf.fit(X_train, y_train)
+#     preds = clf.predict(X_test)
+#     print(f"Depth {depth}, Accuracy: {accuracy_score(y_test, preds)}")
+
 Usage:
   python decision_tree_sklearn.py --train features/train_features.csv --test features/test_features.csv --outdir results_dt_sklearn --depths 5 10 20 50
 """
