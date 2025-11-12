@@ -7,3 +7,4 @@ features/*.csv
 *.pt
 *.pth
 *.joblib
+.DS_Store
