@@ -3,54 +3,53 @@ This project implements and evaluates a VGG11 Convolutional Neural Network for C
 The model is trained directly on 32×32 RGB images and learns hierarchical spatial features through convolution, pooling, batch normalization, and dropout.
 
 ## Model Architecture
-The network follows the VGG11 design adapted for small CIFAR-10 inputs.  
-It stacks sequential convolution → BatchNorm → ReLU blocks, with MaxPooling to reduce spatial size, and a fully connected classification head.
 
-Input (32×32×3)
-↓
-Conv → BN → ReLU → MaxPool
-↓
-Conv → BN → ReLU → MaxPool
-↓
-Conv → BN → ReLU → Conv → BN → ReLU → MaxPool
-↓
-Conv → BN → ReLU → Conv → BN → ReLU → MaxPool
-↓
-Conv → BN → ReLU → Conv → BN → ReLU → MaxPool
-↓
-Flatten → FC(4096) → ReLU → Dropout(0.5)
-↓
-FC(4096) → ReLU → Dropout(0.5)
-↓
-Output Layer (10 classes)
+The architecture follows the VGG11 specification, adapted for CIFAR-10:
 
-The convolution kernel size is configurable (`2`, `3`, `5`, or `7`) to study receptive field effects.
+- Convolution → BatchNorm → ReLU layers
+- Five MaxPooling layers to reduce spatial size
+- Feature tensor (512) flattened to a fully connected classifier:
+  - 4096 → 4096 → 10 output classes
+- Dropout (0.5) to reduce overfitting
+
+> Implemented in: `VGG11` class inside vgg11_cnn.py:contentReference[oaicite:2]{index=2}
 
 ## Dataset
 
-This model trains on CIFAR-10, consisting of 10 object categories:
-airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck
-The dataset is loaded automatically using `torchvision.datasets.CIFAR10`.
+This model uses the CIFAR-10 dataset loaded automatically via `torchvision.datasets.CIFAR10`.  
+It contains 10 classes: airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck
 
-## Training and Evaluation
+Data Augmentation applied (training only):
+- Random Horizontal Flip  
+- Normalization to CIFAR-10 mean and std
 
-### Train the CNN
+## Training & Evaluation
+
+### Train the Model
 python vgg11_cnn.py --mode train --epochs 30 --batch_size 128 --lr 0.01 --outdir results_vgg11
 
 ### Evaluate a Saved Model
 python vgg11_cnn.py --mode eval --checkpoint models/vgg11_main.pth --outdir results_vgg11_eval
 
+**Kernel Size Variation**
+receptive fields by changing:
+
+--kernel_size 2
+--kernel_size 3       (default/recommended)
+--kernel_size 5
+--kernel_size 7
+
 ## Output Files
 
-After training/evaluating, the script automatically generates:
+The script automatically generates performance artifacts:
 
-| Output File             | Description                           |
+| File                    | Purpose                               |
 | ----------------------- | ------------------------------------- |
 | `cm_vgg11_k*.png`       | Confusion matrix heatmap              |
 | `metrics_vgg11_k*.json` | Accuracy, Precision, Recall, F1-Score |
-| `vgg11_main.pth`        | Saved trained model weights           |
+| `vgg11_main.pth`        | Saved trained model checkpoint        |
 
-Example directory:
+Example output directory:
 
 results_vgg11/
 │
@@ -59,11 +58,8 @@ results_vgg11/
 │
 └─ models/vgg11_main.pth
 
-## Key Observations
+> Output is produced using utilities in **eval_utils.py** (metrics + confusion matrices). 
 
-* Kernel size = 3 gives the best balance of feature detail and stability.
-* Larger kernels capture broader shape context but may smooth away fine texture details.
-* CNN significantly outperforms Decision Trees and Naive Bayes because it learns spatial structure directly from pixels.
 
 ## Short Summary 
 
