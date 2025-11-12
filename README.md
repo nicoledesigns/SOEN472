@@ -1,5 +1,6 @@
 # SOEN472
 MLP model:
+
 1.
 * Created and activated a clean isolated Python environment.
 * Installed all necessary data science and ML dependencies.
