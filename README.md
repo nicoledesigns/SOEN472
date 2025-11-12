@@ -21,4 +21,5 @@ mlp_mode.py : contains the MLP implementation with different variants (depths an
 mlp_depth_summary (layer variants): contains the model name, Accuracy, Precision, Recall, F1 for each 1 layer and 2 layer mlp models.
 mlp_variants_summary (size variants): contains the model name, Accuracy, Precision, Recall, F1 for each narrow, wide and extra wide mlp models.
 requirements.txt: recreate the python environmnent to test the mlp model.
+
 mlp_1layer.pth, mlp_3layer.pth, mlp_narrow.pth, mlp_wide.pth, mlp_extra_wide.pth, mlp_base.pth: are the saved models
