@@ -8,13 +8,19 @@ The goal of this project is to compare the performance and behavior of both impl
 
 ## Project Structure
 
-├── decision_tree_numpy.py       # Custom NumPy Decision Tree
-├── decision_tree_sklearn.py     # Scikit-Learn Decision Tree
-├── eval_utils.py                # Metrics + Confusion Matrix Utilities
-├── features/                    # PCA-reduced CIFAR-10 feature vectors (not included)
-└── results_dt_numpy/ or results_dt_sklearn/ (generated)
+### File and Folder Overview
 
-## Dataset & Input Features
+1. **`decision_tree_numpy.py`** → Custom Decision Tree implementation built entirely with NumPy.
+2. **`decision_tree_sklearn.py`** → Decision Tree implementation using the Scikit-Learn library.
+3. **`eval_utils.py`** → Contains helper functions for generating evaluation metrics and confusion matrix plots.
+4. **`features/`** → Stores PCA-reduced CIFAR-10 feature vectors (not included in the repository).
+5. **`models/`** → Contains saved model files such as `.pkl` (scikit-learn models) or `.pth` (PyTorch models).
+6. **`results_dt_numpy/`** or **`results_dt_sklearn/`** → Automatically generated output folders containing:
+   * `cm_depthX.png` → Confusion matrix heatmap for each tested depth
+   * `metrics_depthX.json` → Accuracy, Precision, Recall, and F1-Macro scores
+   * `summary.json` → Summary index of all metrics for convenience
+
+## Dataset
 
 This project works with 50-dimensional PCA-compressed feature vectors extracted from CIFAR-10 images.
 Each feature file must be in `.csv` format with columns:
@@ -41,52 +47,41 @@ features/test_features.csv
 
 ## Generated Output
 
-For each depth tested, the scripts automatically generate:
-cm_depthX.png | Confusion matrix heatmap 
-metrics_depthX.json | Accuracy, Precision, Recall, F1-Macro scores 
-summary.json | Index of all results for convenience 
+### Output Files Generated for Each Depth Tested
 
-Example directory:
+For every tested tree depth, the script automatically creates:
 
-results_dt_numpy/
-│
-├─ cm_depth5.png
-├─ cm_depth10.png
-├─ cm_depth20.png
-├─ cm_depth50.png
-│
-├─ metrics_depth5.json
-├─ metrics_depth10.json
-├─ metrics_depth20.json
-├─ metrics_depth50.json
-│
-└─ summary.json
+1. **`cm_depthX.png`** → Confusion matrix heatmap visualization
+2. **`metrics_depthX.json`** → Stores the evaluation metrics:
 
-Same structure for:
+   * Accuracy
+   * Precision
+   * Recall
+   * F1-Macro score
+3. **`summary.json`** → Collects and indexes all metric results for convenience
 
-results_dt_sklearn/
-│
-├─ cm_depth5.png
-├─ cm_depth10.png
-├─ cm_depth20.png
-├─ cm_depth50.png
-│
-├─ metrics_depth5.json
-├─ metrics_depth10.json
-├─ metrics_depth20.json
-├─ metrics_depth50.json
-│
-└─ summary.json
+### Example Folder Structure
+
+#### **NumPy Implementation (`results_dt_numpy/`)**
+
+* Confusion matrix images: `cm_depth5.png`, `cm_depth10.png`, `cm_depth20.png`, `cm_depth50.png`
+* Metrics JSON files: `metrics_depth5.json`, `metrics_depth10.json`, `metrics_depth20.json`, `metrics_depth50.json`
+* Summary file: `summary.json`
+
+#### **scikit-learn Implementation (`results_dt_sklearn/`)**
+
+* Confusion matrix images: `cm_depth5.png`, `cm_depth10.png`, `cm_depth20.png`, `cm_depth50.png`
+* Metrics JSON files: `metrics_depth5.json`, `metrics_depth10.json`, `metrics_depth20.json`, `metrics_depth50.json`
+* Summary file: `summary.json`
+
 
 ## Key Takeaways
 - The NumPy implementation is correct, as its performance closely matches Scikit-Learn.
 - Decision Trees rely heavily on depth control to avoid underfitting/overfitting.
 - Models like CNNs outperform Decision Trees on image data because they learn *spatial features directly*, not just compressed vector representations.
 
+
 ## Author
 Mehjabin Rahman Mowrin  
 COMP472- F 
 Concordia University
-
-## License
-This project is open for educational use.
