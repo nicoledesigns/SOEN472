@@ -26,8 +26,8 @@ This project works with 50-dimensional PCA-compressed feature vectors extracted 
 Each feature file must be in `.csv` format with columns:
 label, f1, f2, f3, ..., f50
 Example folders:
-features/train_features.csv
-features/test_features.csv
+1. features/train_features.csv
+2. features/test_features.csv
 
 ## Running the Models
 
