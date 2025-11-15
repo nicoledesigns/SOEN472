@@ -1,0 +1,32 @@
+========== NumPy GaussianNB ==========
+
+Confusion Matrix (rows=true, cols=pred):
+            airplane automobi     bird      cat     deer      dog     frog    horse     ship    truck
+  airplane       81        1        0        1        0        0        1        0       13        3
+automobile        3       89        0        2        0        0        0        1        0        5
+      bird        7        0       62        8        8        3       11        0        1        0
+       cat        1        0        3       76        3       11        6        0        0        0
+      deer        1        0        4        8       74        2        3        8        0        0
+       dog        0        1        5       12        3       76        2        1        0        0
+      frog        2        0        4        5        6        0       81        1        1        0
+     horse        1        1        0        4        7        5        0       80        1        1
+      ship        7        0        1        0        1        0        0        0       88        3
+     truck        5        3        0        2        0        0        0        1        1       88
+
+Accuracy: 0.7950
+Macro Precision: 0.7991
+Macro Recall:    0.7950
+Macro F1:        0.7952
+Micro F1 (Accuracy): 0.7950
+
+Per-Class F1 Scores:
+  airplane  : 0.7788
+  automobile: 0.9128
+  bird      : 0.6927
+  cat       : 0.6972
+  deer      : 0.7327
+  dog       : 0.7716
+  frog      : 0.7941
+  horse     : 0.8333
+  ship      : 0.8585
+  truck     : 0.8800
