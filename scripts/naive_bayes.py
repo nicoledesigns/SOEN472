@@ -3,6 +3,7 @@ import argparse
 import json
 import os
 from datetime import datetime
+from joblib import dump
 
 import numpy as np
 import pandas as pd
@@ -191,6 +192,41 @@ class GaussianNB_Numpy:
         jll = self._joint_log_likelihood(X)
         return self.classes_[np.argmax(jll, axis=1)]
 
+    # ---------- NEW: save / load ----------
+    def save(self, path):
+        """Save NB model parameters to a .npz file."""
+        if not path.endswith(".npz"):
+            path = path + ".npz"
+
+        dir_name = os.path.dirname(path)
+        if dir_name:
+            os.makedirs(dir_name, exist_ok=True)
+
+        np.savez(
+            path,
+            classes=self.classes_,
+            theta=self.theta_,
+            sigma=self.sigma_,
+            class_log_prior=self.class_log_prior_,
+            var_smoothing=self.var_smoothing,
+        )
+        print(f"[saved model] {path}")
+
+    @staticmethod
+    def load(path):
+        """Load NB model parameters from a .npz file."""
+        if not path.endswith(".npz"):
+            path = path + ".npz"
+
+        data = np.load(path, allow_pickle=True)
+        model = GaussianNB_Numpy(var_smoothing=float(data["var_smoothing"]))
+        model.classes_ = data["classes"]
+        model.theta_ = data["theta"]
+        model.sigma_ = data["sigma"]
+        model.class_log_prior_ = data["class_log_prior"]
+        print(f"[loaded model] {path}")
+        return model
+
 # ---------- IO ----------
 def load_csv(path):
     df = pd.read_csv(path)
@@ -220,27 +256,59 @@ def main():
 
     # Part 1: NumPy-only GNB
     gnb_np = GaussianNB_Numpy(var_smoothing=args.smooth).fit(X_train, y_train)
+
+    # SAVE the trained NumPy model (fixed path under reports/)
+    model_path = os.path.join(args.out, "numpy_gaussiannb_model.npz")
+    gnb_np.save(model_path)
+
     yhat_np = gnb_np.predict(X_test)
     print_summary(y_test, yhat_np, header="NumPy GaussianNB")
     save_report("NumPy GaussianNB", y_test, yhat_np, out_dir=args.out, class_names=class_names)
     save_text_report("NumPy GaussianNB", y_test, yhat_np, class_names, out_dir=args.out)
 
-    # Part 2: scikit-learn GNB (optional)
+    # Part 2: scikit-learn GNB 
     if args.sklearn:
         try:
             from sklearn.naive_bayes import GaussianNB
             gnb_sk = GaussianNB(var_smoothing=args.smooth)
             gnb_sk.fit(X_train, y_train)
             yhat_sk = gnb_sk.predict(X_test)
+
+            # Print summary
             print_summary(y_test, yhat_sk, header="scikit-learn GaussianNB")
+
+            # Save metrics + confusion matrix
+            save_report(
+                "scikit-learn GaussianNB",
+                y_test,
+                yhat_sk,
+                out_dir=args.out,
+                class_names=class_names
+            )
+
+            # Save formatted .txt report
+            save_text_report(
+                "scikit-learn GaussianNB",
+                y_test,
+                yhat_sk,
+                class_names,
+                out_dir=args.out
+            )
+            yhat_sk = gnb_sk.predict(X_test)
+            print_summary(y_test, yhat_sk, header="scikit-learn GaussianNB")
+
             save_report("scikit-learn GaussianNB", y_test, yhat_sk,
                         out_dir=args.out, class_names=class_names)
             save_text_report("scikit-learn GaussianNB", y_test, yhat_sk,
-                             class_names, out_dir=args.out)
+                            class_names, out_dir=args.out)
+
+            # ---- SAVE SCIKIT MODEL ----
+            model_path = os.path.join(args.out, "sklearn_gaussiannb_model.joblib")
+            dump(gnb_sk, model_path)
+            print(f"[saved sklearn model] {model_path}")
         except Exception as e:
             print("\n[warn] scikit-learn not available or failed:", e)
             print("Install with: pip install scikit-learn")
 
 if __name__ == "__main__":
     main()
-    
